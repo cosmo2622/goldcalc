@@ -25,16 +25,15 @@
   </div>
 
   <script>
-    async function fetchGoldPrice() {
+   async function fetchGoldPrice() {
   const apiKey = 'Fvho4fUUxq5t81tD1udPjat3IZBtAn%2BsGoK%2BEukltAH2VZ3FZ%2Fnx58l04rCGgHwt8rCmNKFkJoN8Braa1lWWyQ%3D%3D';
-  const apiURL = encodeURIComponent(`https://api.odcloud.kr/api/GetKrGoldPrice/v1/latest?serviceKey=${apiKey}`);
-  const corsProxy = `https://api.allorigins.win/get?url=${apiURL}`;
+  const apiURL = `https://api.odcloud.kr/api/GetKrGoldPrice/v1/latest?serviceKey=${apiKey}`;
+  const corsProxy = `https://corsproxy.io/?${encodeURIComponent(apiURL)}`;
   const response = await fetch(corsProxy);
-  const result = await response.json();
-  const data = JSON.parse(result.contents);
+  const data = await response.json();
   return data.data[0].price;
 }
-    }
+
 
     async function calculate() {
       const goldPricePerGram = await fetchGoldPrice();
