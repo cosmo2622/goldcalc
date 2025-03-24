@@ -28,7 +28,7 @@
     async function fetchGoldPrice() {
       const apiKey = 'Fvho4fUUxq5t81tD1udPjat3IZBtAn%2BsGoK%2BEukltAH2VZ3FZ%2Fnx58l04rCGgHwt8rCmNKFkJoN8Braa1lWWyQ%3D%3D';
       const apiURL = `https://apis.data.go.kr/1160100/service/GetGeneralProductInfoService/getGoldPriceInfo?serviceKey=${apiKey}&resultType=json`;
-      const corsProxy = `https://cors-anywhere.herokuapp.com/${apiURL}`;
+      const corsProxy = `https://lively-sun-cosmo.cosmo2622.workers.dev`;
       const response = await fetch(corsProxy);
       const data = await response.json();
       return data.response.body.items.item[0].price;
