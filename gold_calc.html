@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>티스토리 실시간 금 시세 계산기</title>
+  <style>
+    body { font-family: 'Malgun Gothic', sans-serif; padding: 10px; }
+    .gold-calculator { width: 100%; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 15px; border-radius: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f8f8f8; }
+    button { background-color: #FFD700; border: none; padding: 8px 15px; cursor: pointer; border-radius: 5px; transition: 0.3s; }
+    button:hover { background-color: #FFC107; }
+    input[type="number"] { padding: 5px; width: 100%; box-sizing: border-box; }
+  </style>
+</head>
+<body>
+  <div class="gold-calculator">
+    <h2>실시간 금 시세 계산기</h2>
+    <p id="currentPrice">현재 금 1g당 가격: 불러오는 중...</p>
+    <input type="number" id="grams" placeholder="금 무게(g) 입력">
+    <button onclick="calculate()">계산하기</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function fetchGoldPrice() {
+      const apiKey = 'Fvho4fUUxq5t81tD1udPjat3IZBtAn%2BsGoK%2BEukltAH2VZ3FZ%2Fnx58l04rCGgHwt8rCmNKFkJoN8Braa1lWWyQ%3D%3D';
+      const url = `https://api.odcloud.kr/api/GetKrGoldPrice/v1/latest?serviceKey=${apiKey}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      return data.data[0].price;
+    }
+
+    async function calculate() {
+      const goldPricePerGram = await fetchGoldPrice();
+      const grams = document.getElementById('grams').value;
+      if (grams <= 0) {
+        alert('올바른 금 무게를 입력하세요.');
+        return;
+      }
+      const totalPrice = goldPricePerGram * grams;
+      document.getElementById('result').innerHTML = `
+        <table>
+          <tr>
+            <th>금 무게 (g)</th>
+            <th>1g당 가격 (원)</th>
+            <th>총 가격 (원)</th>
+          </tr>
+          <tr>
+            <td>${grams}</td>
+            <td>${goldPricePerGram.toLocaleString()}</td>
+            <td>${totalPrice.toLocaleString()}</td>
+          </tr>
+        </table>
+      `;
+    }
+
+    window.onload = async () => {
+      const currentPrice = await fetchGoldPrice();
+      document.getElementById('currentPrice').innerText =
+        `현재 금 1g당 가격: ${currentPrice.toLocaleString()}원`;
+    }
+  </script>
+</body>
+</html>
